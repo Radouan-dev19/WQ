@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { SelectionGrid } from "@/components/ui/selection-grid";
 import { SortableRanking } from "@/components/ui/sortable-ranking";
+import { submitQuestionnaire } from "@/lib/supabase-questionnaire";
 
 const foodReactions = [
   "Une décision diplomatique très sérieuse vient d’être prise.",
@@ -193,9 +194,7 @@ export function Questionnaire() {
     if (validation) { setError(validation); return; }
     setSubmitting(true); setError("");
     try {
-      const response = await fetch("/api/submit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state) });
-      const data = await response.json().catch(() => ({})) as { error?: string };
-      if (!response.ok) throw new Error(data.error || "L’enregistrement n’a pas abouti.");
+      await submitQuestionnaire(state);
       markSubmitted(); router.push("/resultat");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Une erreur est survenue. Tes réponses sont conservées sur ce téléphone, tu peux réessayer.");
