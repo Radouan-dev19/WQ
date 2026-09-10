@@ -1,0 +1,12 @@
+{
+  "name": "On se capte ?",
+  "short_name": "On se capte",
+  "lang": "fr",
+  "description": "Le petit jeu pour faire connaissance.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5f7f2",
+  "theme_color": "#dfff78",
+  "icons": [{ "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
