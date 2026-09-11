@@ -22,6 +22,8 @@ export interface QuestionnaireAnswers {
   cadeauAutre: string;
   freeDayChoice: string;
   decisionNourriture: string;
+  animalChoice: string;
+  animalAutre: string;
   accordSurReseau: YesNo;
   finalNoAttempts: number;
 }
@@ -38,4 +40,3 @@ export interface QuestionnaireState {
 export interface SubmittedQuestionnaire extends QuestionnaireState {
   completedAt: string;
 }
-

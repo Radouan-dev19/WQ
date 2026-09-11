@@ -20,10 +20,21 @@ create table if not exists public.questionnaire_responses (
   cadeau_pref text[] not null check (cardinality(cadeau_pref) between 1 and 2),
   free_day_choice text not null,
   decision_nourriture text not null,
+  animal_choice text not null check (animal_choice in ('Oui, un chat de préférence 🐈', 'Oui, un autre animal', 'Non, pas spécialement')),
+  animal_autre text,
   accord_sur_reseau boolean not null,
   final_no_attempts smallint not null default 0 check (final_no_attempts >= 0),
   answers jsonb not null check (jsonb_typeof(answers) = 'object')
 );
+
+-- Migration pour une table déjà créée avant l’ajout de la question sur les animaux.
+alter table public.questionnaire_responses add column if not exists animal_choice text;
+alter table public.questionnaire_responses add column if not exists animal_autre text;
+alter table public.questionnaire_responses
+  drop constraint if exists questionnaire_responses_animal_choice_check;
+alter table public.questionnaire_responses
+  add constraint questionnaire_responses_animal_choice_check
+  check (animal_choice in ('Oui, un chat de préférence 🐈', 'Oui, un autre animal', 'Non, pas spécialement')) not valid;
 
 alter table public.questionnaire_responses enable row level security;
 
@@ -43,6 +54,8 @@ with check (
   and cardinality(defauts) = 3
   and cardinality(pays_musulmans_a_visiter) = 3
   and cardinality(classement_reseaux_sociaux) = 6
+  and animal_choice in ('Oui, un chat de préférence 🐈', 'Oui, un autre animal', 'Non, pas spécialement')
+  and (animal_choice <> 'Oui, un autre animal' or length(trim(coalesce(animal_autre, ''))) > 0)
 );
 
 -- Permet aussi de mettre à jour une table créée avec l’ancienne liste de cinq réseaux.

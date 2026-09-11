@@ -18,6 +18,7 @@ export const socialOptions = ["Instagram", "Snapchat", "TikTok", "WhatsApp", "Fa
 export const giftOptions = ["Fleurs 💐", "Chocolat / gourmandises", "Parfum", "Bijoux", "Livre", "Quelque chose lié à un souvenir", "Une sortie surprise", "Un petit cadeau personnalisé", "Un message attentionné suffit", "Autre"];
 export const freeDayOptions = ["Dormir jusqu’à ce que mon corps décide lui-même de l’heure", "Sortie / restaurant", "Journée famille", "Journée séries / films", "Shopping", "Voyage improvisé", "Rester seule tranquillement"];
 export const foodDecisionOptions = ["Moi évidemment", "Toi, exceptionnellement", "Celui qui a la meilleure idée", "Pierre-feuille-ciseaux", "On commande les deux et on arrête de compliquer la vie"];
+export const animalOptions = ["Oui, un chat de préférence 🐈", "Oui, un autre animal", "Non, pas spécialement"];
 
 export const flow = [
   { question: 1, label: "Anniversaire" }, { question: 2, label: "Plat préféré" },
@@ -30,7 +31,7 @@ export const flow = [
   { question: 10, label: "Voyages" }, { question: 11, label: "Pays où vivre" },
   { question: 12, label: "Réseaux sociaux" }, { question: 13, label: "Petites attentions" },
   { question: 14, label: "Journée libre" }, { question: 15, label: "Négociation importante" },
-  { question: 16, label: "Dernière question" },
+  { question: 16, label: "Animal de compagnie" }, { question: 17, label: "Dernière question" },
 ] as const;
 
 export const initialAnswers: QuestionnaireAnswers = {
@@ -38,7 +39,7 @@ export const initialAnswers: QuestionnaireAnswers = {
   successfulDay: [], qualities: [], defauts: [], ageMariageIdeal: null, planCarriere: "",
   religionImportance: null, coupleReligionActions: [], enfantsReligionPriorites: [], paysMusulmansAVisiter: [],
   paysDeReve: "", paysDeReveAutre: "", classementReseauxSociaux: socialOptions, cadeauPref: [], cadeauAutre: "",
-  freeDayChoice: "", decisionNourriture: "", accordSurReseau: null, finalNoAttempts: 0,
+  freeDayChoice: "", decisionNourriture: "", animalChoice: "", animalAutre: "", accordSurReseau: null, finalNoAttempts: 0,
 };
 
 export function createInitialState(started = false): QuestionnaireState {
@@ -63,7 +64,8 @@ export function validateStep(step: number, a: QuestionnaireAnswers): string | nu
     14: a.cadeauPref.length >= 1 && a.cadeauPref.length <= 2 ? null : "Choisis une ou deux attentions.",
     15: a.freeDayChoice ? null : "Choisis ton programme idéal.",
     16: a.decisionNourriture ? null : "Choisis qui tranche cette question essentielle.",
-    17: a.accordSurReseau ? null : "Choisis ta réponse, même si le bouton Non essaie de négocier.",
+    17: a.animalChoice && (a.animalChoice !== "Oui, un autre animal" || a.animalAutre.trim()) ? null : a.animalChoice ? "Précise quel autre animal tu aimerais." : "Choisis une réponse.",
+    18: a.accordSurReseau ? null : "Choisis ta réponse, même si le bouton Non essaie de négocier.",
   };
   return checks[step] ?? null;
 }

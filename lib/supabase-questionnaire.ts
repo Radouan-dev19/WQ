@@ -45,6 +45,8 @@ export async function submitQuestionnaire(state: QuestionnaireState) {
     cadeau_pref: a.cadeauPref,
     free_day_choice: a.freeDayChoice,
     decision_nourriture: a.decisionNourriture,
+    animal_choice: a.animalChoice,
+    animal_autre: a.animalChoice === "Oui, un autre animal" ? a.animalAutre : null,
     accord_sur_reseau: a.accordSurReseau === "yes",
     final_no_attempts: a.finalNoAttempts,
     answers: a,

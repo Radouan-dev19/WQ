@@ -63,6 +63,7 @@ export function Result() {
           <div><dt>Petites attentions</dt><dd>{a.cadeauPref.join(" · ")}{a.cadeauAutre ? ` · ${a.cadeauAutre}` : ""}</dd></div>
           <div><dt>Journée libre</dt><dd>{a.freeDayChoice}</dd></div>
           <div><dt>Choix du restaurant</dt><dd>{a.decisionNourriture}</dd></div>
+          <div><dt>Animal de compagnie</dt><dd>{a.animalChoice || "Pas encore répondu"}{a.animalChoice === "Oui, un autre animal" && a.animalAutre ? ` · ${a.animalAutre}` : ""}</dd></div>
           <div><dt>Continuer la discussion</dt><dd>{a.accordSurReseau === "yes" ? "Oui 😌" : "Non 🥲"}</dd></div>
         </dl>
       </motion.section>}

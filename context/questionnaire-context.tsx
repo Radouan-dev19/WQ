@@ -34,6 +34,8 @@ export function QuestionnaireProvider({ children }: { children: React.ReactNode 
             ...savedRanking.filter((network) => socialOptions.includes(network)),
             ...socialOptions.filter((network) => !savedRanking.includes(network)),
           ];
+          parsed.answers.animalChoice ??= "";
+          parsed.answers.animalAutre ??= "";
           // The draft comes from an external browser store and is restored after hydration.
           // eslint-disable-next-line react-hooks/set-state-in-effect
           setSavedDraft(parsed);

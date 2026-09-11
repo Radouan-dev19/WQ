@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useQuestionnaire } from "@/context/questionnaire-context";
 import {
-  careerOptions, childrenReligionOptions, countryOptions, coupleReligionOptions, flawOptions,
+  animalOptions, careerOptions, childrenReligionOptions, countryOptions, coupleReligionOptions, flawOptions,
   flow, foodCategories, foodDecisionOptions, freeDayOptions, giftOptions, moodOptions,
   qualityOptions, religionLabels, socialOptions, successfulDayOptions, travelOptions,
   validateStep,
@@ -149,6 +149,13 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
     {a.decisionNourriture && <p className="reaction" aria-live="polite">{foodReaction}</p>}
   </>;
 
+  if (step === 17) return <>
+    <h1>Est-ce que tu souhaiterais avoir un animal plus tard&nbsp;?</h1>
+    <p className="question-intro">Un chat de préférence… mais les autres candidatures peuvent être étudiées 🐈</p>
+    <SingleChoice options={animalOptions} value={a.animalChoice} onChange={(animalChoice) => updateAnswers({ animalChoice, animalAutre: animalChoice === "Oui, un autre animal" ? a.animalAutre : "" })} />
+    {a.animalChoice === "Oui, un autre animal" && <div className="field-block"><label className="field-label" htmlFor="animal-other">Quel animal aimerais-tu&nbsp;?</label><input id="animal-other" className="text-input" value={a.animalAutre} onChange={(event) => updateAnswers({ animalAutre: event.target.value })} placeholder="Par exemple : un chien, un lapin…" maxLength={80} /></div>}
+  </>;
+
   const favorite = a.classementReseauxSociaux[0] || socialOptions[0];
   const answered = a.accordSurReseau !== null;
   const chooseNo = () => {
@@ -181,7 +188,7 @@ export function Questionnaire() {
   useEffect(() => { if (ready && !savedDraft) begin(); }, [ready, savedDraft, begin]);
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
 
-  const header = useMemo(() => meta.label === "Dernière question" ? "Dernière question" : `Question ${meta.question} sur 15${"substep" in meta ? ` · ${meta.substep}` : ""}`, [meta]);
+  const header = useMemo(() => meta.label === "Dernière question" ? "Dernière question" : `Question ${meta.question} sur 16${"substep" in meta ? ` · ${meta.substep}` : ""}`, [meta]);
   const next = () => {
     const validation = validateStep(step, state.answers);
     if (validation) { setError(validation); return; }
