@@ -17,7 +17,7 @@ create table if not exists public.questionnaire_responses (
   pays_de_reve text not null,
   classement_reseaux_sociaux text[] not null check (cardinality(classement_reseaux_sociaux) = 6),
   reseau_social_prefere text not null,
-  cadeau_pref text[] not null check (cardinality(cadeau_pref) between 1 and 2),
+  cadeau_pref text[] not null check (cardinality(cadeau_pref) between 1 and 3),
   free_day_choice text not null,
   decision_nourriture text not null,
   animal_choice text not null check (animal_choice in ('Oui, un chat de préférence 🐈', 'Oui, un autre animal', 'Non, pas spécialement')),
@@ -64,6 +64,13 @@ alter table public.questionnaire_responses
 alter table public.questionnaire_responses
   add constraint questionnaire_responses_classement_reseaux_sociaux_check
   check (cardinality(classement_reseaux_sociaux) = 6) not valid;
+
+-- Permet de sélectionner jusqu’à trois petites attentions.
+alter table public.questionnaire_responses
+  drop constraint if exists questionnaire_responses_cadeau_pref_check;
+alter table public.questionnaire_responses
+  add constraint questionnaire_responses_cadeau_pref_check
+  check (cardinality(cadeau_pref) between 1 and 3) not valid;
 
 comment on table public.questionnaire_responses is
 'Réponses du questionnaire. Les visiteurs peuvent uniquement insérer; la lecture reste réservée au propriétaire dans Supabase.';

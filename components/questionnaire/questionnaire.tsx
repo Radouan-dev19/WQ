@@ -131,8 +131,8 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
 
   if (step === 14) return <>
     <h1>Quelles petites attentions te font le plus plaisir&nbsp;?</h1>
-    <p className="question-intro">Choisis-en deux au maximum. Ceci ressemble beaucoup à une fiche de révision utile.</p>
-    <SelectionGrid options={giftOptions} selected={a.cadeauPref} onChange={(cadeauPref) => updateAnswers({ cadeauPref })} max={2} columns={2} />
+    <p className="question-intro">Choisis-en trois au maximum. Ceci ressemble beaucoup à une fiche de révision utile.</p>
+    <SelectionGrid options={giftOptions} selected={a.cadeauPref} onChange={(cadeauPref) => updateAnswers({ cadeauPref })} max={3} columns={2} />
     {a.cadeauPref.includes("Autre") && <div className="field-block"><label className="field-label" htmlFor="gift-other">Ton idée</label><input id="gift-other" className="text-input" value={a.cadeauAutre} onChange={(event) => updateAnswers({ cadeauAutre: event.target.value })} maxLength={100} /></div>}
   </>;
 

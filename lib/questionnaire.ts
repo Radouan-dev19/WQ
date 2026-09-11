@@ -61,7 +61,7 @@ export function validateStep(step: number, a: QuestionnaireAnswers): string | nu
     11: a.paysMusulmansAVisiter.length === 3 ? null : "Compose un classement de trois destinations.",
     12: a.paysDeReve ? null : "Choisis une réponse.",
     13: a.classementReseauxSociaux.length === 6 ? null : "Classe les six réseaux.",
-    14: a.cadeauPref.length >= 1 && a.cadeauPref.length <= 2 ? null : "Choisis une ou deux attentions.",
+    14: a.cadeauPref.length >= 1 && a.cadeauPref.length <= 3 ? null : "Choisis entre une et trois attentions.",
     15: a.freeDayChoice ? null : "Choisis ton programme idéal.",
     16: a.decisionNourriture ? null : "Choisis qui tranche cette question essentielle.",
     17: a.animalChoice && (a.animalChoice !== "Oui, un autre animal" || a.animalAutre.trim()) ? null : a.animalChoice ? "Précise quel autre animal tu aimerais." : "Choisis une réponse.",
