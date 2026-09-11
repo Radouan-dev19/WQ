@@ -68,7 +68,7 @@ export function Result() {
       </motion.section>}
 
       <div className="review-action"><Button type="button" variant="secondary" onClick={() => setExpanded((value) => !value)}>{expanded ? <ChevronUp size={18} /> : <ChevronDown size={18} />} Revoir mes réponses</Button></div>
-      <footer className="result-footer"><h2>Merci d’avoir joué le jeu Wasilla :)</h2><Link className="button" href="/"><Home size={18} /> Retour à l’accueil</Link></footer>
+      <footer className="result-footer"><h2>Merci d’avoir joué le jeu Wassila :)</h2><Link className="button" href="/"><Home size={18} /> Retour à l’accueil</Link></footer>
     </div>
   </main>;
 }

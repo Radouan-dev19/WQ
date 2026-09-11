@@ -1,7 +1,7 @@
 import type { QuestionnaireAnswers, QuestionnaireState } from "@/types/questionnaire";
 
-export const STORAGE_KEY = "marhba-wasilla-draft-v1";
-export const RESULT_KEY = "marhba-wasilla-result-v1";
+export const STORAGE_KEY = "marhba-wassila-draft-v1";
+export const RESULT_KEY = "marhba-wassila-result-v1";
 
 export const foodCategories = ["Cuisine marocaine", "Italienne", "Asiatique", "Burgers / fast-food", "Grillades", "Poisson / fruits de mer / sushi", "Autre"];
 export const moodOptions = ["Manger quelque chose que j’aime 🍰", "Parler avec quelqu’un que j’apprécie", "Recevoir une attention / un cadeau", "Sortir prendre l’air", "Dormir 😴", "Rire", "Écouter de la musique", "Passer du temps avec ma famille", "Avoir un moment seule", "Faire du sport", "Autre"];

@@ -8,7 +8,7 @@ export default function Home() {
       <section className="welcome-card">
         <div className="welcome-mark" aria-hidden="true"><Sparkles size={22} /></div>
         <p className="eyebrow">Une petite parenthèse rien que pour toi</p>
-        <h1>Marhba Wasilla <span>:)</span></h1>
+        <h1>Marhba Wassila <span>:)</span></h1>
         <p className="welcome-subtitle">Petit questionnaire pour mieux te connaître <span>:)</span><br />Essaye d’avoir les bonnes réponses <span>;)</span></p>
         <div className="promise"><Clock3 size={19} aria-hidden="true" /><p>Promis, ce n’est ni un examen de chirurgie dentaire, ni un interrogatoire 😌<br /><strong>Normalement ça prend moins de 10 minutes.</strong></p></div>
         <Link className="button button-primary welcome-button" href="/questionnaire">Commencer <ArrowRight size={19} aria-hidden="true" /></Link>
