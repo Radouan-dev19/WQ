@@ -41,7 +41,7 @@ export function Result() {
       </motion.header>
 
       <section className="summary-grid" aria-label="Résumé des réponses">
-        <article className="summary-card"><h2>Anniversaire</h2><p className="summary-value">Le {a.jourDeNaissance} octobre 🎂</p><p className="summary-comment">La date est désormais placée sous haute surveillance.</p></article>
+        <article className="summary-card"><h2>Anniversaire</h2><p className="summary-value">Le {a.jourDeNaissance} octobre 🎂</p><p className="summary-comment">Je prends note 📓</p></article>
         <article className="summary-card"><h2>Nourriture</h2><p className="summary-value">{a.nourritureCategorie}{a.platFavori ? ` · ${a.platFavori}` : ""}</p><p className="summary-comment">Une information utile pour éviter les longues négociations devant un menu.</p></article>
         <article className="summary-card"><h2>Ta journée réussie</h2><List values={a.successfulDay} /></article>
         <article className="summary-card"><h2>Trois qualités</h2><p className="summary-value">{a.qualities.join(" · ")}</p></article>
