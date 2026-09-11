@@ -8,7 +8,9 @@ export interface QuestionnaireAnswers {
   moodBoosterAutre: string;
   successfulDay: string[];
   qualities: string[];
+  qualitiesAutre: string;
   defauts: string[];
+  defautsAutre: string;
   ageMariageIdeal: number | null;
   planCarriere: string;
   religionImportance: number | null;

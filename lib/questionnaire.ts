@@ -6,8 +6,8 @@ export const RESULT_KEY = "marhba-wassila-result-v1";
 export const foodCategories = ["Cuisine marocaine", "Italienne", "Asiatique", "Burgers / fast-food", "Grillades", "Poisson / fruits de mer / sushi", "Autre"];
 export const moodOptions = ["Manger quelque chose que j’aime 🍰", "Parler avec quelqu’un que j’apprécie", "Recevoir une attention / un cadeau", "Sortir prendre l’air", "Dormir 😴", "Rire", "Écouter de la musique", "Passer du temps avec ma famille", "Avoir un moment seule", "Faire du sport", "Autre"];
 export const successfulDayOptions = ["J’ai été productive", "J’ai appris quelque chose", "J’ai passé du temps avec les personnes que j’aime", "J’ai beaucoup rigolé", "J’ai pris soin de moi", "J’ai avancé dans mes objectifs", "J’ai accompli mes prières correctement", "J’ai eu du temps pour me reposer", "J’ai fait quelque chose de spontané", "Autre"];
-export const qualityOptions = ["Attentionnée", "Ambitieuse", "Généreuse", "Drôle", "Loyale", "Patiente", "Respectueuse", "Organisée", "Empathique", "Déterminée", "Calme", "Honnête", "Affectueuse"];
-export const flawOptions = ["Têtue", "Impatiente", "Jalouse", "Susceptible", "Désordonnée", "Trop perfectionniste", "Réservée", "Parfois trop directe", "Rancunière", "Stressée", "Indécise", "Trop exigeante"];
+export const qualityOptions = ["Attentionnée", "Ambitieuse", "Généreuse", "Drôle", "Loyale", "Patiente", "Respectueuse", "Organisée", "Empathique", "Déterminée", "Calme", "Honnête", "Affectueuse", "Autre"];
+export const flawOptions = ["Têtue", "Impatiente", "Jalouse", "Susceptible", "Désordonnée", "Trop perfectionniste", "Réservée", "Parfois trop directe", "Rancunière", "Stressée", "Indécise", "Trop exigeante", "Autre"];
 export const careerOptions = ["Travailler à temps plein et développer ma carrière", "Travailler, mais garder beaucoup de temps pour ma famille", "Travailler à temps partiel", "Arrêter éventuellement de travailler pour m’occuper de mon foyer", "Ça dépendra surtout de ma situation à ce moment-là"];
 export const religionLabels = ["Importante, sans être centrale", "Présente dans les moments importants", "Très présente au quotidien", "Une base forte du foyer", "Au centre de la vie familiale"];
 export const coupleReligionOptions = ["Se rappeler mutuellement les prières", "Apprendre ensemble", "Écouter des rappels ou conférences ensemble", "Lire et étudier davantage le Coran et la Sunnah", "Se conseiller avec douceur", "Fréquenter un environnement positif", "Accomplir certaines pratiques ensemble", "Laisser chacun progresser à son rythme tout en s’encourageant"];
@@ -36,7 +36,7 @@ export const flow = [
 
 export const initialAnswers: QuestionnaireAnswers = {
   jourDeNaissance: null, nourritureCategorie: "", platFavori: "", moodBoosters: [], moodBoosterAutre: "",
-  successfulDay: [], qualities: [], defauts: [], ageMariageIdeal: null, planCarriere: "",
+  successfulDay: [], qualities: [], qualitiesAutre: "", defauts: [], defautsAutre: "", ageMariageIdeal: null, planCarriere: "",
   religionImportance: null, coupleReligionActions: [], enfantsReligionPriorites: [], paysMusulmansAVisiter: [],
   paysDeReve: "", paysDeReveAutre: "", classementReseauxSociaux: socialOptions, cadeauPref: [], cadeauAutre: "",
   freeDayChoice: "", decisionNourriture: "", animalChoice: "", animalAutre: "", accordSurReseau: null, finalNoAttempts: 0, messageLibre: "",
@@ -52,8 +52,8 @@ export function validateStep(step: number, a: QuestionnaireAnswers): string | nu
     1: a.nourritureCategorie ? null : "Choisis au moins une catégorie.",
     2: a.moodBoosters.length >= 1 && a.moodBoosters.length <= 2 ? null : "Choisis une ou deux réponses.",
     3: a.successfulDay.length >= 1 && a.successfulDay.length <= 3 ? null : "Choisis entre une et trois réponses.",
-    4: a.qualities.length === 3 ? null : "Choisis exactement trois qualités.",
-    5: a.defauts.length === 3 ? null : "Choisis exactement trois défauts.",
+    4: a.qualities.length === 3 && (!a.qualities.includes("Autre") || a.qualitiesAutre.trim()) ? null : "Choisis exactement trois qualités et précise « Autre » si besoin.",
+    5: a.defauts.length === 3 && (!a.defauts.includes("Autre") || a.defautsAutre.trim()) ? null : "Choisis exactement trois défauts et précise « Autre » si besoin.",
     6: a.ageMariageIdeal ? null : "Choisis un âge.", 7: a.planCarriere ? null : "Choisis la réponse qui te correspond le mieux.",
     8: a.religionImportance ? null : "Choisis un niveau d’importance.",
     9: a.coupleReligionActions.length >= 1 && a.coupleReligionActions.length <= 3 ? null : "Choisis entre une et trois réponses.",

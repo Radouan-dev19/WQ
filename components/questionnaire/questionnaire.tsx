@@ -64,12 +64,14 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
     <h1>Choisis exactement trois qualités qui te ressemblent.</h1>
     <p className="question-intro">Le moment de te vendre un peu, avec élégance bien sûr.</p>
     <SelectionGrid options={qualityOptions} selected={a.qualities} onChange={(qualities) => updateAnswers({ qualities })} max={3} exact={3} columns={2} />
+    {a.qualities.includes("Autre") && <div className="field-block"><label className="field-label" htmlFor="quality-other">Quelle qualité&nbsp;?</label><input id="quality-other" className="text-input" value={a.qualitiesAutre} onChange={(event) => updateAnswers({ qualitiesAutre: event.target.value })} placeholder="Par exemple : créative…" maxLength={100} /></div>}
   </>;
 
   if (step === 5) return <>
     <h1>Maintenant, exactement trois petits défauts.</h1>
     <p className="question-intro"><strong>Promis, tes réponses ne seront pas utilisées contre toi devant un tribunal.</strong><br />Dans une future discussion, en revanche… je ne garantis rien 😌</p>
     <SelectionGrid options={flawOptions} selected={a.defauts} onChange={(defauts) => updateAnswers({ defauts })} max={3} exact={3} columns={2} />
+    {a.defauts.includes("Autre") && <div className="field-block"><label className="field-label" htmlFor="flaw-other">Quel défaut&nbsp;?</label><input id="flaw-other" className="text-input" value={a.defautsAutre} onChange={(event) => updateAnswers({ defautsAutre: event.target.value })} placeholder="Par exemple : je réfléchis trop…" maxLength={100} /></div>}
   </>;
 
   if (step === 6) return <>
