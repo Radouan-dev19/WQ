@@ -14,7 +14,7 @@ export const coupleReligionOptions = ["Se rappeler mutuellement les prières", "
 export const childrenReligionOptions = ["Leur apprendre la prière tôt", "Leur apprendre le Coran", "Leur expliquer la religion avec douceur", "Leur donner surtout un bon exemple à la maison", "Leur apprendre la langue arabe", "Les entourer d’un environnement musulman positif", "Leur transmettre de bonnes valeurs et un bon comportement"];
 export const travelOptions = ["Arabie saoudite 🇸🇦", "Émirats arabes unis 🇦🇪", "Malaisie 🇲🇾", "Indonésie 🇮🇩", "Turquie 🇹🇷", "Qatar 🇶🇦", "Oman 🇴🇲", "Maroc 🇲🇦", "Égypte 🇪🇬", "Bali"];
 export const countryOptions = ["Émirats arabes unis", "Qatar", "Arabie saoudite", "Malaisie", "Turquie", "Autre pays musulman", "Je préfère rester proche de ma famille", "Je ne sais pas encore"];
-export const socialOptions = ["Instagram", "Snapchat", "WhatsApp", "Facebook", "X / Twitter"];
+export const socialOptions = ["Instagram", "Snapchat", "TikTok", "WhatsApp", "Facebook", "X / Twitter"];
 export const giftOptions = ["Fleurs 💐", "Chocolat / gourmandises", "Parfum", "Bijoux", "Livre", "Quelque chose lié à un souvenir", "Une sortie surprise", "Un petit cadeau personnalisé", "Un message attentionné suffit", "Autre"];
 export const freeDayOptions = ["Dormir jusqu’à ce que mon corps décide lui-même de l’heure", "Sortie / restaurant", "Journée famille", "Journée séries / films", "Shopping", "Voyage improvisé", "Rester seule tranquillement"];
 export const foodDecisionOptions = ["Moi évidemment", "Toi, exceptionnellement", "Celui qui a la meilleure idée", "Pierre-feuille-ciseaux", "On commande les deux et on arrête de compliquer la vie"];
@@ -59,7 +59,7 @@ export function validateStep(step: number, a: QuestionnaireAnswers): string | nu
     10: a.enfantsReligionPriorites.length >= 1 && a.enfantsReligionPriorites.length <= 3 ? null : "Choisis entre une et trois réponses.",
     11: a.paysMusulmansAVisiter.length === 3 ? null : "Compose un classement de trois destinations.",
     12: a.paysDeReve ? null : "Choisis une réponse.",
-    13: a.classementReseauxSociaux.length === 5 ? null : "Classe les cinq réseaux.",
+    13: a.classementReseauxSociaux.length === 6 ? null : "Classe les six réseaux.",
     14: a.cadeauPref.length >= 1 && a.cadeauPref.length <= 2 ? null : "Choisis une ou deux attentions.",
     15: a.freeDayChoice ? null : "Choisis ton programme idéal.",
     16: a.decisionNourriture ? null : "Choisis qui tranche cette question essentielle.",

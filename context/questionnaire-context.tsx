@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { createInitialState, RESULT_KEY, STORAGE_KEY } from "@/lib/questionnaire";
+import { createInitialState, RESULT_KEY, socialOptions, STORAGE_KEY } from "@/lib/questionnaire";
 import type { QuestionnaireAnswers, QuestionnaireState, SubmittedQuestionnaire } from "@/types/questionnaire";
 
 type ContextValue = {
@@ -29,6 +29,11 @@ export function QuestionnaireProvider({ children }: { children: React.ReactNode 
       if (raw) {
         const parsed = JSON.parse(raw) as QuestionnaireState;
         if (parsed.version === 1 && parsed.started && parsed.currentStep >= 0) {
+          const savedRanking = parsed.answers.classementReseauxSociaux ?? [];
+          parsed.answers.classementReseauxSociaux = [
+            ...savedRanking.filter((network) => socialOptions.includes(network)),
+            ...socialOptions.filter((network) => !savedRanking.includes(network)),
+          ];
           // The draft comes from an external browser store and is restored after hydration.
           // eslint-disable-next-line react-hooks/set-state-in-effect
           setSavedDraft(parsed);

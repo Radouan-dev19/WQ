@@ -125,7 +125,7 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
 
   if (step === 13) return <>
     <h1>Classe ces réseaux du préféré au moins utilisé.</h1>
-    <p className="question-intro">Fais glisser les lignes, ou utilise les flèches. Le premier servira pour une toute dernière question.</p>
+    <p className="question-intro">Classe les six réseaux en faisant glisser les lignes, ou en utilisant les flèches. Le premier servira pour une toute dernière question.</p>
     <SortableRanking items={a.classementReseauxSociaux} onChange={(classementReseauxSociaux) => updateAnswers({ classementReseauxSociaux })} />
   </>;
 

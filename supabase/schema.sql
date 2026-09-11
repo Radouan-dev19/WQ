@@ -15,7 +15,7 @@ create table if not exists public.questionnaire_responses (
   enfants_religion_priorites text[] not null check (cardinality(enfants_religion_priorites) between 1 and 3),
   pays_musulmans_a_visiter text[] not null check (cardinality(pays_musulmans_a_visiter) = 3),
   pays_de_reve text not null,
-  classement_reseaux_sociaux text[] not null check (cardinality(classement_reseaux_sociaux) = 5),
+  classement_reseaux_sociaux text[] not null check (cardinality(classement_reseaux_sociaux) = 6),
   reseau_social_prefere text not null,
   cadeau_pref text[] not null check (cardinality(cadeau_pref) between 1 and 2),
   free_day_choice text not null,
@@ -42,8 +42,15 @@ with check (
   and cardinality(qualities) = 3
   and cardinality(defauts) = 3
   and cardinality(pays_musulmans_a_visiter) = 3
-  and cardinality(classement_reseaux_sociaux) = 5
+  and cardinality(classement_reseaux_sociaux) = 6
 );
+
+-- Permet aussi de mettre à jour une table créée avec l’ancienne liste de cinq réseaux.
+alter table public.questionnaire_responses
+  drop constraint if exists questionnaire_responses_classement_reseaux_sociaux_check;
+alter table public.questionnaire_responses
+  add constraint questionnaire_responses_classement_reseaux_sociaux_check
+  check (cardinality(classement_reseaux_sociaux) = 6) not valid;
 
 comment on table public.questionnaire_responses is
 'Réponses du questionnaire. Les visiteurs peuvent uniquement insérer; la lecture reste réservée au propriétaire dans Supabase.';
