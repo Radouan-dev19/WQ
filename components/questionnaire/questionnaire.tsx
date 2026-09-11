@@ -171,6 +171,11 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
     </div>
     <p className="final-message" aria-live="polite">{a.accordSurReseau === "yes" ? "Très bonne réponse… j’aurais été surpris du contraire 😌" : a.accordSurReseau === "no" ? "Aïe… au moins l’honnêteté est validée 🥲" : a.finalNoAttempts === 1 ? "Ce bouton avait visiblement besoin d’un instant pour réfléchir 😂" : ""}</p>
     {a.accordSurReseau === "yes" && <div className="confetti" aria-hidden="true">{Array.from({ length: 16 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}</div>}
+    <div className="field-block final-message-field">
+      <label className="field-label" htmlFor="message-libre">Dis-m’en plus sur toi ou si tu as quelque chose à rajouter :)</label>
+      <textarea id="message-libre" className="text-input textarea-input" rows={5} value={a.messageLibre ?? ""} onChange={(event) => updateAnswers({ messageLibre: event.target.value })} placeholder="Je t’écoute…" maxLength={1000} />
+      <p className="helper">Facultatif · {(a.messageLibre ?? "").length}/1000</p>
+    </div>
   </>;
 }
 

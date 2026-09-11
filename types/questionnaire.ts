@@ -26,6 +26,7 @@ export interface QuestionnaireAnswers {
   animalAutre: string;
   accordSurReseau: YesNo;
   finalNoAttempts: number;
+  messageLibre: string;
 }
 
 export interface QuestionnaireState {

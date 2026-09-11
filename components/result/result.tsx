@@ -65,6 +65,7 @@ export function Result() {
           <div><dt>Choix du restaurant</dt><dd>{a.decisionNourriture}</dd></div>
           <div><dt>Animal de compagnie</dt><dd>{a.animalChoice || "Pas encore répondu"}{a.animalChoice === "Oui, un autre animal" && a.animalAutre ? ` · ${a.animalAutre}` : ""}</dd></div>
           <div><dt>Continuer la discussion</dt><dd>{a.accordSurReseau === "yes" ? "Oui 😌" : "Non 🥲"}</dd></div>
+          {a.messageLibre && <div><dt>Un dernier mot</dt><dd className="free-message">{a.messageLibre}</dd></div>}
         </dl>
       </motion.section>}
 

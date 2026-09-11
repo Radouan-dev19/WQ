@@ -39,7 +39,7 @@ export const initialAnswers: QuestionnaireAnswers = {
   successfulDay: [], qualities: [], defauts: [], ageMariageIdeal: null, planCarriere: "",
   religionImportance: null, coupleReligionActions: [], enfantsReligionPriorites: [], paysMusulmansAVisiter: [],
   paysDeReve: "", paysDeReveAutre: "", classementReseauxSociaux: socialOptions, cadeauPref: [], cadeauAutre: "",
-  freeDayChoice: "", decisionNourriture: "", animalChoice: "", animalAutre: "", accordSurReseau: null, finalNoAttempts: 0,
+  freeDayChoice: "", decisionNourriture: "", animalChoice: "", animalAutre: "", accordSurReseau: null, finalNoAttempts: 0, messageLibre: "",
 };
 
 export function createInitialState(started = false): QuestionnaireState {
