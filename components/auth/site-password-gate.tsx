@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { LoaderCircle, LockKeyhole } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const ACCESS_KEY = "wq-site-access-v1";
@@ -14,7 +15,9 @@ async function digestPassword(password: string) {
 }
 
 export function SitePasswordGate({ children }: { children: React.ReactNode }) {
-  const [status, setStatus] = useState<"checking" | "locked" | "unlocked">("checking");
+  const pathname = usePathname();
+  const router = useRouter();
+  const [status, setStatus] = useState<"checking" | "locked" | "redirecting" | "unlocked">("checking");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [checking, setChecking] = useState(false);
@@ -24,6 +27,13 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setStatus(sessionStorage.getItem(ACCESS_KEY) === "granted" ? "unlocked" : "locked");
   }, []);
+
+  useEffect(() => {
+    if (status === "redirecting" && pathname === "/") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setStatus("unlocked");
+    }
+  }, [pathname, status]);
 
   const unlock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,8 +47,14 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
 
     if (expectedHash && submittedHash === expectedHash) {
       sessionStorage.setItem(ACCESS_KEY, "granted");
-      setStatus("unlocked");
       setPassword("");
+
+      if (pathname === "/") {
+        setStatus("unlocked");
+      } else {
+        setStatus("redirecting");
+        router.replace("/");
+      }
     } else {
       setError(expectedHash ? "Ce mot de passe n’est pas le bon." : "L’accès privé n’est pas encore configuré.");
     }
@@ -48,7 +64,7 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
 
   if (status === "unlocked") return children;
 
-  if (status === "checking") {
+  if (status === "checking" || status === "redirecting") {
     return <main className="access-page"><div className="loading-page"><LoaderCircle className="spin-icon" /> Vérification de l’accès…</div></main>;
   }
 
@@ -76,7 +92,7 @@ export function SitePasswordGate({ children }: { children: React.ReactNode }) {
           />
           {error && <p id="access-error" className="validation-error" role="alert">{error}</p>}
           <Button type="submit" disabled={checking || !password}>
-            {checking ? <><span className="spinner" /> Vérification…</> : <>Accéder au questionnaire</>}
+            {checking ? <><span className="spinner" /> Vérification…</> : <>Entrer</>}
           </Button>
         </form>
       </section>
