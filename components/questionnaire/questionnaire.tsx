@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Heart, LoaderCircle, LockKeyhole, RotateCcw, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuestionnaire } from "@/context/questionnaire-context";
 import {
   animalOptions, careerOptions, childrenReligionOptions, countryOptions, coupleReligionOptions, flawOptions,
@@ -78,9 +78,9 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
     <h1>À quel âge imagines-tu idéalement te marier&nbsp;?</h1>
     <p className="question-intro">Fais défiler et choisis ton âge. Cette réponse est très officiellement enregistrée.</p>
     <div className="age-wheel" role="group" aria-label="Âge idéal pour le mariage">
-      {Array.from({ length: 10 }, (_, index) => index + 21).map((age) => <button key={age} type="button" className={`age-button ${a.ageMariageIdeal === age ? "active" : ""}`} aria-pressed={a.ageMariageIdeal === age} onClick={() => updateAnswers({ ageMariageIdeal: age })}>{age}</button>)}
+      {Array.from({ length: 10 }, (_, index) => index + 21).map((age) => <button key={age} type="button" className={`age-button ${a.ageMariageIdeal === age ? "active" : ""}`} aria-pressed={a.ageMariageIdeal === age} onClick={() => updateAnswers({ ageMariageIdeal: age })} disabled={a.ageMariageIdeal !== null}>{age}</button>)}
     </div>
-    {a.ageMariageIdeal && a.ageMariageIdeal > 22 && <p className="reaction">C’est beaucoup trop loin ça… choix à refaire 😂<br /><small>P.S. Ton vrai choix est quand même bien enregistré.</small></p>}
+    {a.ageMariageIdeal && a.ageMariageIdeal > 22 && <p className="reaction">C’est beaucoup trop loin ça… 😂<br /><small>Ton premier choix est bien enregistré. On passe à la suite dans quelques secondes.</small></p>}
   </>;
 
   if (step === 7) return <>
@@ -160,18 +160,15 @@ function StepContent({ step, foodReaction, setFoodReaction }: { step: number; fo
 
   const favorite = a.classementReseauxSociaux[0] || socialOptions[0];
   const answered = a.accordSurReseau !== null;
-  const chooseNo = () => {
-    if (a.finalNoAttempts === 0) updateAnswers({ finalNoAttempts: 1 });
-    else updateAnswers({ accordSurReseau: "no", finalNoAttempts: a.finalNoAttempts + 1 });
-  };
+  const chooseNo = () => updateAnswers({ accordSurReseau: "no", finalNoAttempts: a.finalNoAttempts + 1 });
   return <>
     <h1>Bon… maintenant la vraie dernière question 👀</h1>
     <p className="question-intro">Est-ce qu’on pourrait continuer à discuter sur <strong>{favorite}</strong>, avec des vocaux aussi pour plus de fluidité&nbsp;? 😌</p>
     <div className="final-choice-zone">
       <Button type="button" onClick={() => updateAnswers({ accordSurReseau: "yes" })} disabled={answered}>Oui, avec plaisir</Button>
-      <Button type="button" variant="secondary" className={a.finalNoAttempts === 1 && !answered ? "fleeing" : ""} onClick={chooseNo} disabled={answered}>Non</Button>
+      {a.accordSurReseau !== "no" && <Button type="button" variant="secondary" onClick={chooseNo} disabled={answered}>Non</Button>}
     </div>
-    <p className="final-message" aria-live="polite">{a.accordSurReseau === "yes" ? "Très bonne réponse… j’aurais été surpris du contraire 😌" : a.accordSurReseau === "no" ? "Aïe… au moins l’honnêteté est validée 🥲" : a.finalNoAttempts === 1 ? "Ce bouton avait visiblement besoin d’un instant pour réfléchir 😂" : ""}</p>
+    <p className="final-message" aria-live="polite">{a.accordSurReseau === "yes" ? "Très bonne réponse… j’aurais été surpris du contraire 😌" : a.accordSurReseau === "no" ? "D’accord, je respecte ton choix 😢" : ""}</p>
     {a.accordSurReseau === "yes" && <div className="confetti" aria-hidden="true">{Array.from({ length: 16 }, (_, index) => <i key={index} style={{ "--i": index } as React.CSSProperties} />)}</div>}
     <div className="field-block final-message-field">
       <label className="field-label" htmlFor="message-libre">Dis-m’en plus sur toi ou si tu as quelque chose à rajouter :)</label>
@@ -194,6 +191,11 @@ export function Questionnaire() {
 
   useEffect(() => { if (ready && !savedDraft) begin(); }, [ready, savedDraft, begin]);
   useEffect(() => { window.scrollTo({ top: 0, behavior: "smooth" }); }, [step]);
+  useEffect(() => {
+    if (step !== 6 || !state.answers.ageMariageIdeal || state.answers.ageMariageIdeal <= 22) return;
+    const timer = window.setTimeout(() => setStep(7), 12000);
+    return () => window.clearTimeout(timer);
+  }, [setStep, state.answers.ageMariageIdeal, step]);
 
   const header = useMemo(() => meta.label === "Dernière question" ? "Dernière question" : `Question ${meta.question} sur 16${"substep" in meta ? ` · ${meta.substep}` : ""}`, [meta]);
   const next = () => {
@@ -203,7 +205,7 @@ export function Questionnaire() {
     setStep(Math.min(flow.length - 1, step + 1));
   };
   const previous = () => { setError(""); setStep(Math.max(0, step - 1)); };
-  const submit = async () => {
+  const submit = useCallback(async () => {
     const validation = validateStep(step, state.answers);
     if (validation) { setError(validation); return; }
     setSubmitting(true); setError("");
@@ -213,7 +215,12 @@ export function Questionnaire() {
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Une erreur est survenue. Tes réponses sont conservées sur ce téléphone, tu peux réessayer.");
     } finally { setSubmitting(false); }
-  };
+  }, [markSubmitted, router, state, step]);
+  useEffect(() => {
+    if (!isLast || state.answers.accordSurReseau !== "no") return;
+    const timer = window.setTimeout(() => { void submit(); }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [isLast, state.answers.accordSurReseau, submit]);
 
   if (!ready) return <main className="questionnaire-page"><div className="loading-page"><LoaderCircle className="spin-icon" /> Préparation du questionnaire…</div></main>;
 
@@ -226,7 +233,7 @@ export function Questionnaire() {
           <p className="step-kicker"><span /> Pour mieux te connaître</p>
           <div className="question-content"><StepContent step={step} foodReaction={foodReaction} setFoodReaction={setFoodReaction} /></div>
           {error && <p className="validation-error" role="alert">{error}</p>}
-          {isLast && state.answers.accordSurReseau && <div className="submit-panel"><p><Heart size={15} aria-hidden="true" /> Tout est prêt. Tes réponses seront enregistrées en une seule fois.</p><Button type="button" onClick={submit} disabled={submitting}>{submitting ? <><span className="spinner" /> Enregistrement…</> : <><Sparkles size={18} /> Valider mes réponses</>}</Button></div>}
+          {isLast && state.answers.accordSurReseau === "yes" && <div className="submit-panel"><p><Heart size={15} aria-hidden="true" /> Tout est prêt. Tes réponses seront enregistrées en une seule fois.</p><Button type="button" onClick={submit} disabled={submitting}>{submitting ? <><span className="spinner" /> Enregistrement…</> : <><Sparkles size={18} /> Valider mes réponses</>}</Button></div>}
           <footer className="question-footer">
             <Button type="button" variant="ghost" onClick={previous} disabled={step === 0 || submitting}><ArrowLeft size={18} /> Précédent</Button>
             {!isLast && <Button type="button" onClick={next}>Continuer <ArrowRight size={18} /></Button>}
